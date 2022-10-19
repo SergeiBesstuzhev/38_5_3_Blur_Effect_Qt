@@ -3,18 +3,15 @@
 
 window::window(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::window)
-{
+    , ui(new Ui::window) {
     ui->setupUi(this);
 }
 
-window::~window()
-{
+window::~window() {
    delete ui;
 }
 
-QImage window::blurImage(QImage imageSource, int blurValue)
-{
+QImage window::blurImage(QImage imageSource, int blurValue) {
     if(imageSource.isNull()) return QImage();
     QGraphicsScene scene;
     QGraphicsPixmapItem item;
@@ -29,39 +26,36 @@ QImage window::blurImage(QImage imageSource, int blurValue)
     QPainter painter(&result);
     scene.render(&painter, QRectF(),
                  QRectF(0, 0, imageSource.width(), imageSource.height()));
+
+    delete blur;
+
     return result;
 }
 
 
-void window::processNewImage(QString sourceFile, int blurValue)
-{
+void window::processNewImage(QString sourceFile, int blurValue) {
     ui->label->setPixmap(QPixmap::fromImage(blurImage(QImage(sourceFile), blurValue).scaled(
                                                     ui->label->width(),
                                                     ui->label->height(),
                                                     Qt::KeepAspectRatio)));
 }
 
-void window::openFile()
-{
+void window::openFile() {
     imageSourcePath = QFileDialog::getOpenFileName(nullptr,
                                  "Open image to blur",
                                                    "",
                                  "image files (*.jpg)"
                                  );
-    if(QFileInfo::exists(imageSourcePath))
-    {
+    if(QFileInfo::exists(imageSourcePath)) {
         processNewImage(imageSourcePath, ui->horizontalSlider->value());
     }
 }
 
-void window::blurImage()
-{
-    if(QFileInfo::exists(imageSourcePath))
-    {
+void window::blurImage() {
+    if(QFileInfo::exists(imageSourcePath)) {
         processNewImage(imageSourcePath, ui->horizontalSlider->value());
     }
-    else
-    {
+    else {
        ui->label->setText("Image path is not set. Please press \"Open image\" button.");
     }
 }

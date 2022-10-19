@@ -16,8 +16,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class window; }
 QT_END_NAMESPACE
 
-class window : public QWidget
-{
+class window : public QWidget {
     Q_OBJECT
 
 public:
